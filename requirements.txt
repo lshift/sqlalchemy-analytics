@@ -1,0 +1,10 @@
+alembic==0.8.7
+aniso8601==1.1.0
+factory_boy==2.7.0
+psycopg2==2.6.2
+pyodbc==3.0.10
+pytest==2.9.2
+python-dateutil==2.5.3
+SQLAlchemy==1.0.14
+sqlparse==0.2.1
+wheel==0.29.0
