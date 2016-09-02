@@ -19,14 +19,14 @@ class TableExpressionsTestCase(TestBase):
 
     def test_increment_is_correct_value(self):
         for fixture in [
-            {'max_price_in': {'max_price': 1}, 'result': [{'increment': 50}]},
-            {'max_price_in': {'max_price': 50}, 'result': [{'increment': 50}]},
-            {'max_price_in': {'max_price': 99}, 'result': [{'increment': 50}]},
-            {'max_price_in': {'max_price': 499}, 'result': [{'increment': 100}]},
-            {'max_price_in': {'max_price': 500}, 'result': [{'increment': 100}]},
-            {'max_price_in': {'max_price': 501}, 'result': [{'increment': 150}]},
-            {'max_price_in': {'max_price': 1001}, 'result': [{'increment': 250}]},
-            {'max_price_in': {'max_price': 10001}, 'result': [{'increment': 2050}]},
+            {'max_price_in': {'max_price': 1}, 'result': [{'incr': 50}]},
+            {'max_price_in': {'max_price': 50}, 'result': [{'incr': 50}]},
+            {'max_price_in': {'max_price': 99}, 'result': [{'incr': 50}]},
+            {'max_price_in': {'max_price': 499}, 'result': [{'incr': 100}]},
+            {'max_price_in': {'max_price': 500}, 'result': [{'incr': 100}]},
+            {'max_price_in': {'max_price': 501}, 'result': [{'incr': 150}]},
+            {'max_price_in': {'max_price': 1001}, 'result': [{'incr': 250}]},
+            {'max_price_in': {'max_price': 10001}, 'result': [{'incr': 2050}]},
         ]:
             results = self.exec(get_increment_te(
                 TestTable('max_price', [fixture['max_price_in']]),
@@ -37,32 +37,32 @@ class TableExpressionsTestCase(TestBase):
     def test_price_bands_are_correct(self):
         for fixture in [
             {'max_price_in': {'max_price': 1},
-             'increment_in': {'increment': 50},
+             'increment_in': {'incr': 50},
              'max_num_bands_in': 1,
              'result': [
                  {'num': 1, 'from_price': 1, 'to_price': 50}
              ]},
             {'max_price_in': {'max_price': 1},
-             'increment_in': {'increment': 50},
+             'increment_in': {'incr': 50},
              'max_num_bands_in': 99,
              'result': [
                  {'num': 1, 'from_price': 1, 'to_price': 50}
              ]},
             {'max_price_in': {'max_price': 50},
-             'increment_in': {'increment': 50},
+             'increment_in': {'incr': 50},
              'max_num_bands_in': 99,
              'result': [
                  {'num': 1, 'from_price': 1, 'to_price': 50}
              ]},
             {'max_price_in': {'max_price': 99},
-             'increment_in': {'increment': 50},
+             'increment_in': {'incr': 50},
              'max_num_bands_in': 99,
              'result': [
                  {'num': 1, 'from_price': 1, 'to_price': 50},
                  {'num': 2, 'from_price': 51, 'to_price': 100}
              ]},
             {'max_price_in': {'max_price': 499},
-             'increment_in': {'increment': 100},
+             'increment_in': {'incr': 100},
              'max_num_bands_in': 99,
              'result': [
                  {'num': 1, 'from_price': 1, 'to_price': 100},
@@ -72,7 +72,7 @@ class TableExpressionsTestCase(TestBase):
                  {'num': 5, 'from_price': 401, 'to_price': 500},
              ]},
             {'max_price_in': {'max_price': 500},
-             'increment_in': {'increment': 100},
+             'increment_in': {'incr': 100},
              'max_num_bands_in': 99,
              'result': [
                  {'num': 1, 'from_price': 1, 'to_price': 100},
@@ -82,7 +82,7 @@ class TableExpressionsTestCase(TestBase):
                  {'num': 5, 'from_price': 401, 'to_price': 500},
              ]},
             {'max_price_in': {'max_price': 501},
-             'increment_in': {'increment': 150},
+             'increment_in': {'incr': 150},
              'max_num_bands_in': 99,
              'result': [
                  {'num': 1, 'from_price': 1, 'to_price': 150},
@@ -109,12 +109,14 @@ class IntegrationTestCase(TestBase):
         end_date = datetime(2016, 12, 31)
         f.create_dummy_sales(start_date, end_date)
 
+
         january_art_book_sales_query = session.query(m.Genre) \
             .join(m.Book) \
             .join(m.BookSale) \
             .join(m.Transaction) \
             .filter(m.Genre.name == 'Art') \
             .filter(and_(m.Transaction.create_date >= start_date, m.Transaction.create_date < datetime(2016, 2, 1)))
+
 
         january_art_book_sales = january_art_book_sales_query.all()
 
